@@ -3,6 +3,7 @@ import RegisterView from "@/views/Auth/RegisterView.vue";
 import IndexView from "@/views/Vehicles/IndexView.vue";
 import Login from "@/views/Auth/Login.vue";
 import HomeView from "@/views/HomeView.vue";
+import ProfileEdit from "@/views/Profile/ProfileEdit.vue";
 
 function auth(to, from, next) {
     if (!localStorage.getItem('access_token')) {
@@ -43,6 +44,12 @@ const router = createRouter({
             name: 'vehicles.index',
             beforeEnter: auth,
             component: IndexView
+        },
+        {
+            path: '/profile',
+            name: 'profile.edit',
+            beforeEnter: auth,
+            component: ProfileEdit
         }
     ],
 })
