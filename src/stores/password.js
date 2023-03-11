@@ -1,21 +1,18 @@
 import {reactive, ref} from 'vue'
 import {defineStore} from 'pinia'
-import {useAuth} from '@/stores/auth'
 
-export const useRegister = defineStore('register', () => {
-  const auth = useAuth()
+export const usePassword = defineStore('password', () => {
   const errors = reactive({})
   const isLoading = ref(false)
+  const message = ref('')
   const form = reactive({
-    name: '',
-    email: '',
+    current_password: '',
     password: '',
     password_confirmation: ''
   })
 
   function resetForm() {
-    form.name = ''
-    form.email = ''
+    form.current_password = ''
     form.password = ''
     form.password_confirmation = ''
   }
@@ -24,14 +21,13 @@ export const useRegister = defineStore('register', () => {
     if (isLoading.value) {
       return
     }
-
+    message.value = ''
     isLoading.value = true
     errors.value = {}
     return window.axios
-      .post('auth/register', form)
-      .then((response) => {
-        console.log(response.data.data.access_token)
-        auth.login(response.data.data.access_token)
+      .put('change-password', form)
+      .then((res) => {
+        message.value = 'Password has been updated'
       })
       .catch((res) => {
         if (res.response.status == 422) {
@@ -39,11 +35,9 @@ export const useRegister = defineStore('register', () => {
         }
       })
       .finally(() => {
-        form.password = ''
-        form.password_confirmation = ''
         isLoading.value = false
       })
   }
 
-  return { form, resetForm, handleSubmit, errors, isLoading }
+  return { form, handleSubmit, errors, isLoading, message, resetForm }
 })
