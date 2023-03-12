@@ -10,11 +10,17 @@ export const useParking = defineStore('parking', () => {
     zone_id: '',
   })
   const zoneList = ref([])
+  const parkingDetail = ref({})
+  const activeParkings = ref([])
+  const parkingHistory = ref([])
   const router = useRouter()
 
   function resetForm() {
     form.vehicle_id = ''
     form.zone_id = ''
+  }
+  function resetParkingDetail() {
+    parkingDetail.value = {}
   }
 
   async function getZoneList() {
@@ -22,6 +28,29 @@ export const useParking = defineStore('parking', () => {
         .get('zones')
         .then((res) => {
           zoneList.value = res.data.data.data
+        })
+  }
+  async function getActiveParkings() {
+    return window.axios
+        .get('parkings')
+        .then((res) => {
+          activeParkings.value = res.data.data.data
+        })
+  }
+
+  async function getParkingHistory() {
+    return window.axios
+        .get('parkings/history')
+        .then((res) => {
+          parkingHistory.value = res.data.data.data
+        })
+  }
+
+   function getParkingHistoryDetail(id) {
+    return window.axios
+        .get(`parkings/${id}`)
+        .then((res) => {
+          parkingDetail.value = res.data.data
         })
   }
 
@@ -48,6 +77,8 @@ export const useParking = defineStore('parking', () => {
   }
 
   return { form, resetForm, handleSubmit, errors,
-    isLoading, getZoneList, zoneList
+    isLoading, getZoneList, zoneList, getActiveParkings,
+    activeParkings, getParkingHistory, parkingHistory,
+    getParkingHistoryDetail, parkingDetail, resetParkingDetail
     }
 })

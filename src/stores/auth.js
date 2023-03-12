@@ -14,6 +14,11 @@ export const useAuth = defineStore('auth', () => {
 
   function login(accessToken) {
     setAccessToken(accessToken)
+    router.push({ name: 'parking.index' })
+  }
+
+  function register(accessToken) {
+    setAccessToken(accessToken)
     router.push({ name: 'vehicles.index' })
   }
 
@@ -28,5 +33,5 @@ export const useAuth = defineStore('auth', () => {
     })
   }
 
-  return { login, logout, check, destroyTokenAndRedirectTo }
+  return { login, logout, check, destroyTokenAndRedirectTo, register }
 })

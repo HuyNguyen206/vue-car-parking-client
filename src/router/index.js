@@ -9,6 +9,8 @@ import AddVehicle from "@/views/Vehicles/AddVehicle.vue";
 import EditVehicle from "@/views/Vehicles/EditVehicle.vue";
 import OrderParking from "@/views/Parking/OrderParking.vue";
 import IndexParking from "@/views/Parking/IndexParking.vue";
+import ParkingHistoryDetail from "@/views/Parking/ParkingHistoryDetail.vue";
+import ParkingHistory from "@/views/Parking/ParkingHistory.vue";
 
 function auth(to, from, next) {
   if (!localStorage.getItem('access_token')) {
@@ -19,7 +21,7 @@ function auth(to, from, next) {
 
 function guest(to, from, next) {
   if (localStorage.getItem('access_token')) {
-    return next({ name: 'vehicles.index' })
+    return next({ name: 'parking.index' })
   }
   next()
 }
@@ -85,6 +87,18 @@ const router = createRouter({
       name: 'parking.index',
       beforeEnter: auth,
       component: IndexParking
+    },
+    {
+      path: '/parking/history/:id',
+      name: 'parking.history-detail',
+      beforeEnter: auth,
+      component: ParkingHistoryDetail
+    },
+    {
+      path: '/parking/history',
+      name: 'parking.history',
+      beforeEnter: auth,
+      component: ParkingHistory
     }
   ]
 })

@@ -31,7 +31,7 @@ export const useRegister = defineStore('register', () => {
       .post('auth/register', form)
       .then((response) => {
         console.log(response.data.data.access_token)
-        auth.login(response.data.data.access_token)
+        auth.register(response.data.data.access_token)
       })
       .catch((res) => {
         if (res.response.status == 422) {
